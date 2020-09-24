@@ -1,18 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function App() {
   const [posts, getPosts] = useState([]);
 
-  fetch('https://jsonplaceholder.typicode.com/posts')
-    .then(response => response.json())
-    .then(json => getPosts(json))
+  useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/posts')
+      .then(response => response.json())
+      .then(json => getPosts(json));
+  }, []);
 
   return (
     <>
       <h1>{posts.length} items</h1>
       <ul>
         {posts.map((post) => (
-          <li>{post.title}</li>
+          <li key={post.id}>{post.title}</li>
         ))}
       </ul>
     </>
