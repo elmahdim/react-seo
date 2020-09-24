@@ -8,7 +8,7 @@ export default (props) => {
         fetch(`https://jsonplaceholder.typicode.com/posts/${props.match.params.id}`)
             .then(response => response.json())
             .then(json => getPost(json));
-    }, []);
+    }, [props.match.params.id]);
 
     return post.id ? (
         <>
