@@ -1,17 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet';
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+
+function fetchData(start = 0, limit = 10) {
+    return fetch(`https://jsonplaceholder.typicode.com/posts?_start=${start}&_limit=${limit}`)
+        .then(response => response.json())
+        .then(json => json);
+}
 
 export default () => {
     const [posts, getPosts] = useState([]);
+    const [page, setPage] = useState(10);
+    let location = useLocation();
+    let query = new URLSearchParams(location.search)
+    const mounted = useRef();
 
     useEffect(() => {
-        fetch('https://jsonplaceholder.typicode.com/posts')
-            .then(response => response.json())
-            .then(json => getPosts(json));
-    }, []);
+        if (!mounted.current) {
+            if (query.get('page')) {
+                setPage(Number(query.get('page')) + 10);
+                fetchData(page).then(getPosts);
+            } else {
+                fetchData().then(getPosts);
+            }
+            mounted.current = true;
+        } else {
+            if (query.get('page')) {
+                setPage(Number(query.get('page')) + 10);
+            }
+            fetchData(page).then(getPosts);
+        }
+    }, [location.search, page]);
 
-    return (
+    return posts ? (
         <>
             <Helmet>
                 <meta charSet="utf-8" />
@@ -41,6 +62,9 @@ export default () => {
                     </li>
                 ))}
             </ul>
+            {page >= 100 ? null : (
+                <Link to={`?page=${page}`}>Load more</Link>
+            )}
         </>
-    );
+    ) : 'Loading...';
 }

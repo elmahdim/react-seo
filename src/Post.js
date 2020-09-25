@@ -29,6 +29,14 @@ export default (props) => {
                 <meta property="twitter:title" content={post.title} />
                 <meta property="twitter:description" content={post.body.slice(0, 100)} />
                 <meta property="twitter:image" content="https://images.unsplash.com/photo-1472289065668-ce650ac443d2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80" />
+
+                <script type="application/ld+json">{`
+                    {
+                    "@context": "http://schema.org",
+                    "@type": "Article",
+                    "name": "${post.title}"
+                    }
+                `}</script>
             </Helmet>
 
             <h1>{post.title}</h1>
