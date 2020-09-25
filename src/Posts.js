@@ -15,7 +15,7 @@ export default () => {
     let query = new URLSearchParams(location.search)
     const mounted = useRef();
 
-    useEffect(() => {
+    function fetchBusinesses() {
         if (!mounted.current) {
             if (query.get('page')) {
                 setPage(Number(query.get('page')) + 10);
@@ -30,7 +30,9 @@ export default () => {
             }
             fetchData(page).then(getPosts);
         }
-    }, [location.search, page]);
+    }
+
+    useEffect(fetchBusinesses, [location.search]);
 
     return posts ? (
         <>
