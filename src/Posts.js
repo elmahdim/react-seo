@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link, useLocation } from "react-router-dom";
+import './index.css';
 
 function fetchData(start = 0, limit = 10) {
     return fetch(`https://jsonplaceholder.typicode.com/posts?_start=${start}&_limit=${limit}`)
@@ -33,6 +34,9 @@ export default () => {
     }
 
     useEffect(fetchBusinesses, [location.search]);
+    const toggleDropdown = (even) => {
+        even.target.classList.toggle('is-active');
+    }
 
     return posts ? (
         <>
@@ -55,6 +59,7 @@ export default () => {
                 <meta property="twitter:image" content="https://images.unsplash.com/photo-1472289065668-ce650ac443d2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80" />
             </Helmet>
             <h1>{posts.length} items</h1>
+            <button type="button" className="btn-dropdown" onClick={toggleDropdown}>Dropdown sample</button>
             <ul>
                 {posts.map((post) => (
                     <li key={post.id}>
@@ -65,7 +70,11 @@ export default () => {
                 ))}
             </ul>
             {page >= 100 ? null : (
-                <Link to={`?page=${page}`}>Load more</Link>
+                <>
+                    <br />
+                    <br />
+                    <Link to={`?page=${page}`}>Load more</Link>
+                </>
             )}
         </>
     ) : 'Loading...';
