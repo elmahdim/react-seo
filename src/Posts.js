@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet';
-import { Link, useLocation, Redirect } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import './index.css';
 
 function fetchData(start = 0, limit = 10) {
