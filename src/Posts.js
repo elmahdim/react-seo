@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet';
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, Redirect } from "react-router-dom";
 import './index.css';
 
 function fetchData(start = 0, limit = 10) {
@@ -9,7 +9,7 @@ function fetchData(start = 0, limit = 10) {
         .then(json => json);
 }
 
-export default () => {
+export default (props) => {
     const [posts, getPosts] = useState([]);
     const [page, setPage] = useState(10);
     let location = useLocation();
@@ -34,9 +34,11 @@ export default () => {
     }
 
     useEffect(fetchBusinesses, [location.search]);
-    const toggleDropdown = (even) => {
-        even.target.classList.toggle('is-active');
+    const toggleDropdown = (event) => {
+        event.target.classList.toggle('is-active');
     }
+
+    const onChangeHandler = (event) => props.history.push(event.target.value);
 
     return posts ? (
         <>
@@ -59,16 +61,27 @@ export default () => {
                 <meta property="twitter:image" content="https://images.unsplash.com/photo-1472289065668-ce650ac443d2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80" />
             </Helmet>
             <h1>{posts.length} items</h1>
-            <button type="button" className="btn-dropdown" onClick={toggleDropdown}>Dropdown sample</button>
-            <ul>
-                {posts.map((post) => (
-                    <li key={post.id}>
-                        <Link to={`/posts/${post.id}`}>
+            <div className="BreakpointToMedium">
+                <button type="button" className="btn-dropdown" onClick={toggleDropdown}>Dropdown sample</button>
+                <ul>
+                    {posts.map((post) => (
+                        <li key={post.id}>
+                            <Link to={`/posts/${post.id}`}>
+                                {post.title}
+                            </Link>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+            <div className="BreakpointFromMedium">
+                <select onChange={onChangeHandler}>
+                    {posts.map((post) => (
+                        <option key={post.id} value={`/posts/${post.id}`}>
                             {post.title}
-                        </Link>
-                    </li>
-                ))}
-            </ul>
+                        </option>
+                    ))}
+                </select>
+            </div>
             {page >= 100 ? null : (
                 <>
                     <br />

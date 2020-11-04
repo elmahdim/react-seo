@@ -12,6 +12,23 @@ code {
     monospace;
 }
 
+.BreakpointFromMedium {
+    display: none;
+  }
+
+@media (max-width: 639px) {
+  .BreakpointToMedium {
+    display: none;
+  }
+}
+
+@media (max-width: 639px) {
+  .BreakpointFromMedium {
+    display: block;
+  }
+}
+
+
 
 .btn-dropdown:not(.is-active) + ul {
   display: none;
